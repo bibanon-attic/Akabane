@@ -27,7 +27,7 @@ public class AnaunetInstance extends ListenerAdapter {
     @Override
     public void onMessage(MessageEvent event) {
         String[] message = event.getMessage().split(" ");
-        System.out.println(event.getUser().getNick() + "\n\n" + event.getMessage());
+        //System.out.println(event.getUser().getNick() + "\n\n" + event.getMessage());
         if (!users.hasPermission(event.getUser().getNick(), message[0])) {
             return;
         }
