@@ -1,17 +1,12 @@
 package org.bibanon.anaunet;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Date;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
-import org.pircbotx.hooks.types.GenericMessageEvent;
 
 public class AnaunetInstance extends ListenerAdapter {
 
@@ -90,7 +85,7 @@ public class AnaunetInstance extends ListenerAdapter {
         users.tmpImit();
         //Configure what we want our bot to do
         Configuration configuration = new Configuration.Builder()
-                .setName("Anaunet")
+                .setName("Akabane")
                 .addServer("irc.rizon.net")
                 .addAutoJoinChannel("#bibanon-ab")
                 .addListener(new AnaunetInstance())
