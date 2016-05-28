@@ -46,7 +46,7 @@ public class GrabSiteInitializer {
                 }
                 this.igsets += igsets.replaceAll("[&]", "\\&").replaceAll("[\"]", "\\\"").replaceAll("[;]", "\\;").replaceAll("[|]", "").replaceAll("[.][.][/]", "./").replaceAll("[$]", "\\$").replaceAll(" ", "") + " ";
             }
-            process = Runtime.getRuntime().exec("grab-site \"" + url.toExternalForm().replaceAll("[&]", "\\&").replaceAll("[\"]", "\\\"").replaceAll("[;]", "\\;").replaceAll("[|]", "").replaceAll("[.][.][/]", "./").replaceAll("[$]", "\\$").replaceAll(" ", "") + "\" " + this.igsets + "&2&>1 > /dev/null");
+            process = Runtime.getRuntime().exec("grab-site \"" + url.toExternalForm().replaceAll("[&]", "\\&").replaceAll("[\"]", "\\\"").replaceAll("[;]", "\\;").replaceAll("[|]", "").replaceAll("[.][.][/]", "./").replaceAll("[$]", "\\$").replaceAll(" ", "") + "\" " + this.igsets + "&");
         } catch (IOException ex) {
             Logger.getLogger(GrabSiteInitializer.class.getName()).log(Level.SEVERE, null, ex);
         }
