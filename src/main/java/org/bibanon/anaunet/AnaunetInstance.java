@@ -85,7 +85,7 @@ public class AnaunetInstance extends ListenerAdapter {
         users.tmpImit();
         //Configure what we want our bot to do
         Configuration configuration = new Configuration.Builder()
-                .setName("Akabane")
+                .setName("Akaibane")
                 .addServer("irc.rizon.net")
                 .addAutoJoinChannel("#bibanon-ab")
                 .addListener(new AnaunetInstance())
