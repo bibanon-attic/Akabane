@@ -13,42 +13,33 @@ public class AkaibaneInstance extends ListenerAdapter {
 
     static PircBotX bot;
     static ArchiveIsHtmlParser archiveis = new ArchiveIsHtmlParser();
-    static GrabSiteInitializer grabSiteInit = new GrabSiteInitializer();
-    static Random rand = new Random();
-    static File cwd = new File(System.getProperty("user.dir", "./"));
-    static String url;
-    static URLValidator validator = new URLValidator();
-    static Users users = new Users();
+    static IAGrabSiteProcessManager iagrabsite = new IAGrabSiteProcessManager();
+
+    private static Random rand = new Random();
+    private static Users users = new Users();
+    //    static URLValidator validator = new URLValidator();
+    //util
+    private static File cwd = new File(System.getProperty("user.dir", "./"));
+    private static String url;
+    private static String[] cmdutil;
+    private static String igsets, meta = "";
+    private static int i;
 
     @Override
     public void onMessage(MessageEvent event) {
         String[] message = event.getMessage().split(" ");
-        //System.out.println(event.getUser().getNick() + "\n\n" + event.getMessage());
+
         if (!users.hasPermission(event.getUser().getNick(), message[0])) {
             return;
         }
         switch (message[0]) {
             case ".grab": {
-                String igsets = "";
-                if (message.length > 1) {
-                    if (message.length > 2) {
-                        igsets = message[1];
-                        url = message[2];
-
-                    } else {
-
-                        url = message[1];
-                    }
-
-                    Process process = this.grabSiteInit.grabSite(url, igsets);
-                    event.respond("Grab-Site started.");
-
-                    System.out.println("PID: " + getPid(process));
-                    url = null;
-                    return;
+                cmdutil = new String[message.length - 1];
+                for (i = 1; i < message.length; i++) {
+                    cmdutil[i - 1] = message[i];
                 }
-                event.respond("Usage: \".grab <igsets options> <url>\"");
-                url = null;
+                grab(cmdutil, event);
+                cmdutil = null;
                 return;
             }
             case ".is": {
@@ -84,17 +75,41 @@ public class AkaibaneInstance extends ListenerAdapter {
         }
     }
 
-    public static int getPid(Process process) {
-        try {
-            Class<?> cProcessImpl = process.getClass();
-            Field fPid = cProcessImpl.getDeclaredField("pid");
-            if (!fPid.isAccessible()) {
-                fPid.setAccessible(true);
+    public void grab(String[] cmd, MessageEvent event) {
+        if (cmd.length > 1) {
+            if (cmd.length % 3 == 0 || cmd.length % 5 == 0) {
+                for (i = 0; i < cmd.length; i++) {
+                    switch (cmd[i]) {
+                        case "set": {
+                            i++;
+                            igsets = cmd[i];
+                            break;
+                        }
+                        case "meta": {
+                            i++;
+                            meta = cmd[i];
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                }
+            } else {
+                event.respond("Usage: \".grab [<set> <igsetsoptions>] [<meta> <metadata[;tags[;separated[;...]]]>] <url>\"");
+                return;
             }
-            return fPid.getInt(process);
-        } catch (Exception e) {
-            return -1;
+        } else if (cmd[0] != null) {
+            url = cmd[0];
+        } else {
+            event.respond("Usage: \".grab [<set> <igsetsoptions>] [<meta> <metadata[;tags[;separated[;...]]]>] <url>\"");
+            url = null;
+            return;
         }
+        event.respond("Grab-Site started: PID: " + iagrabsite.addGrab(url, igsets, meta));
+        igsets = null;
+        meta = null;
+        url = null;
     }
 
     public void init(String[] args) throws Exception {
