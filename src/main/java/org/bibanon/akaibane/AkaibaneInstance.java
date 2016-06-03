@@ -1,6 +1,7 @@
-package org.bibanon.anaunet;
+package org.bibanon.akaibane;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.Random;
 import org.pircbotx.Configuration;
@@ -8,7 +9,7 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
-public class AnaunetInstance extends ListenerAdapter {
+public class AkaibaneInstance extends ListenerAdapter {
 
     static PircBotX bot;
     static ArchiveIsHtmlParser archiveis = new ArchiveIsHtmlParser();
@@ -41,6 +42,8 @@ public class AnaunetInstance extends ListenerAdapter {
 
                     Process process = this.grabSiteInit.grabSite(url, igsets);
                     event.respond("Grab-Site started.");
+
+                    System.out.println("PID: " + getPid(process));
                     url = null;
                     return;
                 }
@@ -81,14 +84,27 @@ public class AnaunetInstance extends ListenerAdapter {
         }
     }
 
+    public static int getPid(Process process) {
+        try {
+            Class<?> cProcessImpl = process.getClass();
+            Field fPid = cProcessImpl.getDeclaredField("pid");
+            if (!fPid.isAccessible()) {
+                fPid.setAccessible(true);
+            }
+            return fPid.getInt(process);
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
     public void init(String[] args) throws Exception {
         users.tmpImit();
         //Configure what we want our bot to do
         Configuration configuration = new Configuration.Builder()
-                .setName("Akaibane")
+                .setName("Anaunet")
                 .addServer("irc.rizon.net")
-                .addAutoJoinChannel("#bibanon-ab")
-                .addListener(new AnaunetInstance())
+                .addAutoJoinChannel("#bibanon-test")
+                .addListener(new AkaibaneInstance())
                 .buildConfiguration();
 
         //Create our bot with the configuration

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.bibanon.anaunet;
+package org.bibanon.akaibane;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,19 +12,19 @@ import java.util.logging.Logger;
  *
  * @author root
  */
-public class Anaunet {
+public class Akaibane {
 
-    static AnaunetInstance instance;
+    static AkaibaneInstance instance;
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        instance = new AnaunetInstance();
+        instance = new AkaibaneInstance();
         try {
             instance.init(args);
         } catch (Exception ex) {
-            Logger.getLogger(Anaunet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Akaibane.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
