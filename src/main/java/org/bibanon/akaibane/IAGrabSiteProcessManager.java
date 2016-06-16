@@ -8,6 +8,8 @@ package org.bibanon.akaibane;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,16 +19,18 @@ public class IAGrabSiteProcessManager extends Thread {
 
     private static HashMap<Integer, GrabSite> grabsites = new HashMap<Integer, GrabSite>();
     private static HashMap<Integer, IAUpload> internetarchives = new HashMap<Integer, IAUpload>();
+    private static ArrayList<Integer> grabsiteskeys = new ArrayList<Integer>();
     private static ArrayList<GrabSite> unusedgs = new ArrayList<GrabSite>();
     private static ArrayList<IAUpload> unusedia = new ArrayList<IAUpload>();
+    private static boolean running = true;
     //...
     private static int gspid, iapid = 0;
     private static IAUpload ia = null;
     private static GrabSite gs = null;
     private static IAMetadata metadata = null;
+    private static Process process = null;
 
     public IAGrabSiteProcessManager() {
-        ;
     }
 
     public int addGrab(String url, String igsets, String meta) {
@@ -43,6 +47,7 @@ public class IAGrabSiteProcessManager extends Thread {
         gspid = gs.getPid();
 
         addGrabProcess(gs);
+
         gs = null;
         return gspid;
     }
@@ -55,6 +60,7 @@ public class IAGrabSiteProcessManager extends Thread {
                 }
             }
             grabsites.put(gspid, grab);
+            grabsiteskeys.add(gspid);
         }
     }
 
@@ -82,10 +88,37 @@ public class IAGrabSiteProcessManager extends Thread {
         }
         ia = null;
     }
-    
+
     @Override
-    public void start() {
-        // TODO
+    public void run() {
+        running = true;
+        
+        while (running) {
+            try {
+                Thread.sleep(50);
+                for (int i = 0; i < grabsiteskeys.size(); i++) {
+
+                    if (!grabsites.get(grabsiteskeys.get(i)).getProcess().isAlive()) {
+                        grabsites.get(grabsiteskeys.get(i)).stopRunning();
+                        unusedgs.add(grabsites.remove(grabsiteskeys.get(i)));
+                    }
+                }
+                int j = grabsiteskeys.size();
+                for(int i = 0; i < j; i++) {
+                    if(!grabsites.containsKey(grabsiteskeys.get(i))) {
+                        grabsiteskeys.remove(i);
+                        j--;
+                        i--;
+                    }
+                }
+            } catch (InterruptedException ex) {
+                Logger.getLogger(IAGrabSiteProcessManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public void die() {
+        running = false;
     }
 
 }

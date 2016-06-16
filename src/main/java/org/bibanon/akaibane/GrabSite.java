@@ -101,6 +101,10 @@ public class GrabSite extends Thread {
         return pid;
     }
     
+    public Process getProcess() {
+        return process;
+    }
+    
     public boolean isRunning() {
         return running;
     }

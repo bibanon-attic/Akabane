@@ -76,6 +76,9 @@ public class AkaibaneInstance extends ListenerAdapter {
     }
 
     public void grab(String[] cmd, MessageEvent event) {
+        System.out.println("Grab...");
+        igsets = "";
+        meta = "";
         if (cmd.length > 1) {
             if (cmd.length % 3 == 0 || cmd.length % 5 == 0) {
                 for (i = 0; i < cmd.length; i++) {
@@ -90,11 +93,16 @@ public class AkaibaneInstance extends ListenerAdapter {
                             meta = cmd[i];
                             break;
                         }
+                        case "help": {
+                            event.respond("Usage: \".grab [<set> <igsetsoptions>] [<meta> <metadata[;tags[;separated[;...]]]>] <url>\"");
+                            return;
+                        }
                         default: {
                             break;
                         }
                     }
                 }
+
             } else {
                 event.respond("Usage: \".grab [<set> <igsetsoptions>] [<meta> <metadata[;tags[;separated[;...]]]>] <url>\"");
                 return;
@@ -103,20 +111,24 @@ public class AkaibaneInstance extends ListenerAdapter {
             url = cmd[0];
         } else {
             event.respond("Usage: \".grab [<set> <igsetsoptions>] [<meta> <metadata[;tags[;separated[;...]]]>] <url>\"");
-            url = null;
+            url = "";
             return;
         }
         event.respond("Grab-Site started: PID: " + iagrabsite.addGrab(url, igsets, meta));
-        igsets = null;
-        meta = null;
-        url = null;
+        igsets = "";
+        meta = "";
+        url = "";
     }
 
     public void init(String[] args) throws Exception {
+        System.out.println("Starting...");
         users.tmpImit();
+        iagrabsite = new IAGrabSiteProcessManager();
+        iagrabsite.start();
+        System.out.println("Loading Configuration...");
         //Configure what we want our bot to do
         Configuration configuration = new Configuration.Builder()
-                .setName("Anaunet")
+                .setName("Akabane__")
                 .addServer("irc.rizon.net")
                 .addAutoJoinChannel("#bibanon-test")
                 .addListener(new AkaibaneInstance())

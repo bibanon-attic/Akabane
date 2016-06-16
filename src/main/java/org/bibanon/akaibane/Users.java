@@ -14,9 +14,10 @@ public class Users {
     public void tmpImit() {
         Users.put("x404102", Rank.RE);
         Users.put("antonizoon", Rank.HOTEP);
-        Users.put("Akaibu", Rank.VISITOR);
-        Users.put("Gazlene", Rank.VISITOR);
+        Users.put("Akaibu", Rank.HOTEP);
+        Users.put("Gazlene", Rank.HOTEP);
         Users.put("r3c0d3x", Rank.HOTEP);
+        Users.put("jondon", Rank.HOTEP);
     }
 
     public void addUser(String user, Rank rank) {
