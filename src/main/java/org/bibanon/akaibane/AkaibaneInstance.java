@@ -128,9 +128,9 @@ public class AkaibaneInstance extends ListenerAdapter {
         System.out.println("Loading Configuration...");
         //Configure what we want our bot to do
         Configuration configuration = new Configuration.Builder()
-                .setName("Akabane__")
+                .setName("Akabane_")
                 .addServer("irc.rizon.net")
-                .addAutoJoinChannel("#bibanon-test")
+                .addAutoJoinChannel("#bibanon-ab")
                 .addListener(new AkaibaneInstance())
                 .buildConfiguration();
 
